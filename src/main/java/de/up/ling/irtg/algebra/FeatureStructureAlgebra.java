@@ -47,6 +47,9 @@ public class FeatureStructureAlgebra extends Algebra<FeatureStructure> implement
 
     @Override
     protected FeatureStructure evaluate(String label, List<FeatureStructure> childrenValues) {
+        System.out.println();
+        System.out.println("Label: " + label);
+        System.out.println("ChildrenValues: " + childrenValues);
         // if any of the children are null, just return null
         if (childrenValues.stream().anyMatch(fs -> fs == null)) {
             return null;
@@ -55,24 +58,24 @@ public class FeatureStructureAlgebra extends Algebra<FeatureStructure> implement
 
         if (label == null) {
             Logger.getLogger(FeatureStructureAlgebra.class.getName()).log(Level.SEVERE, null, "Cannot evaluate null label");
-//            System.err.println("evaluate -> null"); // AKAKAK
+            System.out.println("evaluate -> null"); // AKAKAK
             return null;
         } else if (UNIFY.equals(label)) {
             assert childrenValues.size() == 2;
             FeatureStructure ret = childrenValues.get(0).unify(childrenValues.get(1));
-//            System.err.println("evaluate1 -> " + ret.rawToString()); // AKAKAK
+            System.out.println("evaluate1 -> " + ret.rawToString()); // AKAKAK
             return ret;
         } else if (label.startsWith(PROJ)) {
             assert childrenValues.size() == 1;
             String attr = withoutPrefix(label, PROJ);
             FeatureStructure arg = childrenValues.get(0);
-//            System.err.println("evaluate2 -> " + arg.get(attr).rawToString()); // AKAKAK
+            System.out.println("evaluate2 -> " + arg.get(attr).rawToString()); // AKAKAK
             return arg.get(attr);
         } else if (label.startsWith(EMBED)) {
             assert childrenValues.size() == 1;
             AvmFeatureStructure ret = new AvmFeatureStructure();
             ret.put(withoutPrefix(label, EMBED), childrenValues.get(0));
-//            System.err.println("evaluate3 -> " + ret.rawToString()); // AKAKAK
+            System.out.println("evaluate3 -> " + ret.rawToString()); // AKAKAK
             return ret;
         } else if (label.startsWith(EMBED_AUX)) {
             assert childrenValues.size() == 1;
@@ -80,7 +83,7 @@ public class FeatureStructureAlgebra extends Algebra<FeatureStructure> implement
             AvmFeatureStructure ret = new AvmFeatureStructure();
             ret.put(parts[1], childrenValues.get(0).get("root"));
             ret.put(parts[2], childrenValues.get(0).get("foot"));
-//            System.err.println("evaluate4 -> " + ret.rawToString()); // AKAKAK
+            System.out.println("evaluate4 -> " + ret.rawToString()); // AKAKAK
             return ret;
         } else {
             assert childrenValues.isEmpty();
@@ -94,11 +97,11 @@ public class FeatureStructureAlgebra extends Algebra<FeatureStructure> implement
                     parsedAtoms.put(label, cached);
                 }
 
-//                System.err.println("evaluate5 -> " + cached.rawToString()); // AKAKAK
+                System.out.println("evaluate5 -> " + cached.rawToString()); // AKAKAK
                 return cached;
             } catch (FsParsingException ex) {
                 Logger.getLogger(FeatureStructureAlgebra.class.getName()).log(Level.SEVERE, null, ex);
-//                System.err.println("evaluate -> null"); // AKAKAK
+                System.out.println("evaluate -> null"); // AKAKAK
                 return null;
             }
         }

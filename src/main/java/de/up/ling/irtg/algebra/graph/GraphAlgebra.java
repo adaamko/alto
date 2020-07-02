@@ -287,15 +287,21 @@ public class GraphAlgebra extends EvaluatingAlgebra<SGraph> {
 
     @Override
     public SGraph evaluate(String label, List<SGraph> childrenValues) {
+        System.out.println();
+        System.out.println("Label: " + label);
+        System.out.println("ChildrenValues: " + childrenValues);
         try {
             if (label == null) {
                 return null;
             } else if (label.equals(OP_MERGE)) {
-                return childrenValues.get(0).merge(childrenValues.get(1));
+                var ret_value = childrenValues.get(0).merge(childrenValues.get(1));
+                System.out.println(ret_value);
+                return ret_value;
             } else if (label.startsWith(OP_COMBINEDMERGE)) {
                 String[] parts = label.split("_");
-                
-                return childrenValues.get(0).merge(childrenValues.get(1).renameSource(parts[1], parts[2]));
+                var ret_value = childrenValues.get(0).merge(childrenValues.get(1).renameSource(parts[1], parts[2]));
+                System.out.println(ret_value);
+                return ret_value;
                 
             } else if (label.startsWith(OP_RENAME)) {
                 String[] parts = label.split("_");
@@ -303,16 +309,18 @@ public class GraphAlgebra extends EvaluatingAlgebra<SGraph> {
                 if (parts.length == 2) {
                     parts = new String[]{"r", "root", parts[1]};
                 }
-
-                return childrenValues.get(0).renameSource(parts[1], parts[2]);
+                var ret_value = childrenValues.get(0).renameSource(parts[1], parts[2]);
+                System.out.println(ret_value);
+                return ret_value;
             } else if (label.startsWith(OP_SWAP)) {
                 String[] parts = label.split("_");
 
                 if (parts.length == 2) {
                     parts = new String[]{"r", "root", parts[1]};
                 }
-
-                return childrenValues.get(0).swapSources(parts[1], parts[2]);
+                var ret_value = childrenValues.get(0).swapSources(parts[1], parts[2]);
+                System.out.println(ret_value);
+                return ret_value;
             /*} else if (label.equals(OP_FORGET_ALL)) {
                 // forget all sources
                 return childrenValues.get(0).forgetSourcesExcept(Collections.EMPTY_SET);
@@ -331,11 +339,14 @@ public class GraphAlgebra extends EvaluatingAlgebra<SGraph> {
                 if (label.startsWith(OP_FORGET)) {
                     retainedSources = Sets.difference(childrenValues.get(0).getAllSources(), retainedSources);
                 }
-
-                return childrenValues.get(0).forgetSourcesExcept(retainedSources);
+                var ret_value = childrenValues.get(0).forgetSourcesExcept(retainedSources);
+                System.out.println(ret_value);
+                return ret_value;
             } else {
                 SGraph sgraph = (new IsiAmrInputCodec()).read(new ByteArrayInputStream(label.getBytes()));
-                return sgraph.withFreshNodenames();
+                var ret_value = sgraph.withFreshNodenames();
+                System.out.println(ret_value);
+                return ret_value;
             }
         } catch (de.up.ling.irtg.codec.CodecParseException | IOException ex) {
             Logger.getLogger(GraphAlgebra.class.getName()).log(Level.SEVERE, null, ex);

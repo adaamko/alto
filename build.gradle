@@ -71,7 +71,7 @@ scmVersion {
 group = 'com.github.coli-saar'
 version = scmVersion.version
 description = 'alto'
-sourceCompatibility = '1.8'
+sourceCompatibility = '1.10'
 mainClassName = 'de.up.ling.irtg.main.Alto'
 //mainClassName = 'de.up.ling.irtg.script.TulipacParser'
 
